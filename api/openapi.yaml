@@ -1,0 +1,394 @@
+openapi: 3.0.0
+info:
+  description: Enable your customers to make intrabank or IBFT payments through our
+    payment APIs.
+  title: Payments
+  version: 1.0.3
+servers:
+- url: https://api.dev.neem.io/neem
+tags:
+- description: Everything about payments
+  name: Payments
+paths:
+  /api/v1/wallets/payment-inquiry/{walletId}:
+    get:
+      operationId: walletPaymentInquiry
+      parameters:
+      - explode: true
+        in: path
+        name: walletId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Id
+        required: false
+        schema:
+          type: string
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Partner-Id
+        required: false
+        schema:
+          type: integer
+        style: simple
+      - explode: true
+        in: query
+        name: endToEndIdentification
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: paymentScheme
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: amount
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: currency
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: creditorIdentification
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: creditorName
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: creditorInstitutionIdentification
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: creditorSecondaryIdentification
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: extendedProperties
+        required: false
+        schema:
+          items:
+            type: object
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                Data:
+                  PaymentInquiry:
+                    EndtoEndIdentification: "1000"
+                    StatusCode: "200"
+                    StatusMessage: Inquiry Successful
+                    DateTime: 2019-01-01T06:06:06+00:00
+                    Identification: "03290316545"
+                    TransactionAmount: 100.0
+                    TotalAmount: 105.0
+                    Charges:
+                      TransactionProcessingCharges: 5.0
+                    CreditorAccount:
+                      Identification: "03422142169"
+                      Name: Rasheed Imran
+                      SecondaryIdentification: "03422142169"
+                      InstitutionName: ""
+                      InstitutionBranch: ""
+                      BeneficiaryIBAN: ""
+                ExtendedProperties: []
+              schema:
+                type: object
+          description: OK
+          headers:
+            Content-Type:
+              explode: false
+              schema:
+                example: application/json
+                type: string
+              style: simple
+      security:
+      - oAuth: []
+      summary: Payment Inquiry
+      tags:
+      - Payments
+      x-accepts: application/json
+  /api/v1/wallets/payment-initiate/{walletId}:
+    post:
+      operationId: InitiateWalletPayment
+      parameters:
+      - explode: true
+        in: path
+        name: walletId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Id
+        required: false
+        schema:
+          type: string
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Partner-Id
+        required: false
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                Data:
+                  Payment:
+                    EndtoEndIdentification: "1000"
+                    CreditorAccount:
+                      Identification: "03422142169"
+                      Name: Rasheed Imran
+                      PaymentScheme: Wallet
+                      InstitutionIdentification: ""
+                      SecondaryIdentification: "03422142169"
+                      InstitutionName: ""
+                      InstitutionBranch: ""
+                      BeneficiaryIBAN: ""
+                    InstructedAmount:
+                      Amount: 100.0
+                      Currency: PKR
+                    TransactionInformation: Family Expenses
+                    MPin: Mh+Ab+JSNrun==
+                ExtendedProperties: []
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                Data:
+                  Payment:
+                    EndtoEndIdentification: "1000"
+                    StatusCode: "200"
+                    StatusMessage: Payment Successful
+                    DateTime: 2019-01-01T06:06:06+00:00
+                ExtendedProperties: []
+              schema:
+                type: object
+          description: OK
+          headers:
+            Content-Type:
+              explode: false
+              schema:
+                example: application/json
+                type: string
+              style: simple
+      security:
+      - oAuth: []
+      summary: Make Payments
+      tags:
+      - Payments
+      x-content-type: application/json
+      x-accepts: application/json
+  /api/v1/wallets/bill/inquiry/{walletId}:
+    get:
+      operationId: walletBillInquiry
+      parameters:
+      - explode: true
+        in: path
+        name: walletId
+        required: true
+        schema:
+          type: string
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Id
+        required: false
+        schema:
+          type: string
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Partner-Id
+        required: false
+        schema:
+          type: integer
+        style: simple
+      - explode: true
+        in: query
+        name: endToEndIdentification
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: productId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: consumerNumber
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                Data:
+                  BillInquiry:
+                    EndtoEndIdentification: "1000"
+                    StatusCode: "200"
+                    StatusMessage: Successful
+                    DateTime: 2019-01-01T06:06:06+00:00
+                    MobileNetwork: Jazz
+                    IsBillPaid: false
+                    Amount: 1000.0
+                    ConsumerNumber: "12745628324"
+                    LateBillCharges: 5
+                    DueDate: 2018-12-12T06:06:06+00:00
+                    OverDue: false
+                ExtendedProperties: []
+              schema:
+                type: object
+          description: OK
+          headers:
+            Content-Type:
+              explode: false
+              schema:
+                example: application/json
+                type: string
+              style: simple
+      security:
+      - oAuth: []
+      summary: Bill Inquiry
+      tags:
+      - Payments
+      x-accepts: application/json
+  /api/v1/wallets/bill/payment/{walletId}:
+    post:
+      operationId: walletBillPayment
+      parameters:
+      - explode: true
+        in: path
+        name: walletId
+        required: true
+        schema:
+          type: integer
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Id
+        required: false
+        schema:
+          type: string
+        style: simple
+      - example: 1234
+        explode: false
+        in: header
+        name: X-Neem-Partner-Id
+        required: false
+        schema:
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                Data:
+                  BillPayment:
+                    EndtoEndIdentification: "693258"
+                    ProductId: TELENOR01
+                    ConsumerNumber: "1700416100034"
+                    InstructedAmount:
+                      Amount: 1000.0
+                      Currency: PKR
+                    MPin: ==ndjjfe789
+                ExtendedProperties: []
+              type: object
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                Data:
+                  BillPayment:
+                    EndtoEndIdentification: "1000"
+                    StatusCode: "200"
+                    StatusMessage: Successful
+                    DateTime: 2019-01-01T06:06:06+00:00
+                    MobileNetwork: Jazz
+                    Amount: 1000.0
+                    ConsumerNumber: "1700416100034"
+                ExtendedProperties: []
+              schema:
+                type: object
+          description: OK
+          headers:
+            Content-Type:
+              explode: false
+              schema:
+                example: application/json
+                type: string
+              style: simple
+      security:
+      - oAuth: []
+      summary: Bill Payment
+      tags:
+      - Payments
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  schemas: {}
+  securitySchemes:
+    oAuth:
+      description: This API uses OAuth 2 with the client credentials flow.
+      flows:
+        clientCredentials:
+          scopes:
+            email: email identified as scope
+          tokenUrl: https://api.dev.neem.io/neem/api/v1/oauth2/token
+      type: oauth2
+
